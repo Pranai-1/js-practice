@@ -11,7 +11,6 @@ function debouncing(fnc){
     }
 }
 
-
 function throttling(fnc, delay = 2000) {
     let isThrottled = false;
     let lastArgs = null;
@@ -20,19 +19,23 @@ function throttling(fnc, delay = 2000) {
     return function (...args) {
         if (!isThrottled) {
             fnc.apply(this, args); // Execute immediately
+            console.log("Immediate call")
             isThrottled = true;
-            console.log(this,args)
+            lastArgs = null;
+            lastThis = null;
             setTimeout(() => {
                 isThrottled = false;
                 if (lastArgs) {
-                    fnc.apply(lastThis, lastArgs); // Call with latest stored args
+                    fnc.apply(lastThis, lastArgs); // Execute last stored call
+                    console.log("Timeout call")
                     lastArgs = null;
                     lastThis = null;
                 }
             }, delay);
         } else {
-            lastArgs = args; // Store latest arguments for later execution
-            lastThis = this; // Store `this` context
+            // Only store the args if it's a new call during throttle time
+            lastArgs = args;
+            lastThis = this;
         }
     };
 }
