@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #debounce-div{
+        width: 100%;
+    background-color: aqua;
+    margin: 4px;
+    padding: 10px 0px 10px 0px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+}
+
+#throttle-div{
+        width: 100%;
+    background-color: rgb(205, 17, 17);
+    margin: 4px;
+    padding: 10px 0px 10px 0px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+}
+
+</style>
+<body>
+    <div id="debounce-div" >
+        <input type="text" id="debounce-text" placeholder="Debouncing" maxlength="32"/>
+   
+        <input type="number" id="debounce-number" placeholder="Debouncing seconds" max="5" min="1"/>
+    </div>
+    <div id="throttle-div" >
+        <input type="text" id="throttle-text" placeholder="Throttling" maxlength="32"/>
+   
+        <input type="number" id="throttle-number" placeholder="Throttling seconds" max="5" min="1"/>
+    </div>
+</body>
+<script type="module" src="script.js"></script>
+</html>
