@@ -24,13 +24,15 @@ function throttling(fnc, delay = 2000) {
             lastArgs = null;
             lastThis = null;
             setTimeout(() => {
-                isThrottled = false;
+                 isThrottled = false;
                 if (lastArgs) {
                     fnc.apply(lastThis, lastArgs); // Execute last stored call
                     console.log("Timeout call")
                     lastArgs = null;
                     lastThis = null;
                 }
+                // setTimeout(() => (isThrottled = false), delay); //To avoid immediate call after a timeout call
+                //but this will miss the laste event trigger if the time gap between the timeout call and last event is less than delay
             }, delay);
         } else {
             // Only store the args if it's a new call during throttle time
@@ -40,4 +42,21 @@ function throttling(fnc, delay = 2000) {
     };
 }
 
-export {debouncing,throttling}
+//It will miss the last call if the time gap between the timeout call and last event is less than delay
+const throttle = (fn, limit) => {
+    let flag = true;
+    return function(){
+      let context = this;
+      let args = arguments;
+      if(flag){
+        fn.apply(context, args);
+        flag = false;
+        setTimeout(() => {
+          flag=true;
+        }, limit);
+      }
+    }
+  }
+
+
+export {debouncing,throttling,throttle}
