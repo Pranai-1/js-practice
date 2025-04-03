@@ -75,7 +75,7 @@ Function.prototype.polyFillForBind=function(context,...args){
 // .map(), .filter() does not modify the original array (arr). It creates a new array and returns it.
 const arr=[1,2,3,4,5]
 
-let helperArr=arr.map((ele,i)=>ele*2)
+let helperArr=arr.map((ele,i,arr)=>ele*2)
 //console.log(helperArr)
 
 
@@ -100,7 +100,7 @@ const arr2 = [1, [2, [3, 4], 5]];
 Array.prototype.polyFillForMap=function (cb){
     let arr = new Array(this.length); 
     for(let i=0;i<this.length;i++){
-       arr[i]=cb(this[i],i,this)
+       arr[i]=cb(this[i],i,this) //just put a if condition to  this callback function and then push the elements into array 
     }
     return arr
 }
@@ -137,3 +137,74 @@ Array.prototype.polyFillForForEach=function (cb){
 
 arr.polyFillForForEach((ele,index,array)=>array[index]=ele*3)
 console.log(arr)
+
+
+//polyfill for memoize
+// Simulating an expensive function with a smaller delay
+function expensive(num1, num2) {
+    const start = Date.now();
+    while (Date.now() - start < 1000) {} // 1 second delay
+    return num1 + num2;
+}
+
+// Memoization function
+function memoize(fnc) {
+    let cache = {};
+    return function (...args) {
+        let key = JSON.stringify(args);
+        if (!(key in cache)) {
+            cache[key] = fnc.apply(this, args); // Using apply() instead of call() for flexibility
+        }
+        return cache[key];
+    };
+}
+
+
+// First call - Takes time
+// let startTime = Date.now();
+// let res1 = expensive(1, 2);
+// console.log("Time taken:", Date.now() - startTime, "Result:", res1);
+// startTime = Date.now();
+// let res11 = expensive(1, 2);
+// console.log("Time taken:", Date.now() - startTime, "Result:", res11);
+
+
+
+// let memoizedExpensive = memoize(expensive);
+// Second call - Uses cache, should be much faster
+// startTime = Date.now();
+// let res2 = memoizedExpensive(1, 2);
+// console.log("Time taken:", Date.now() - startTime, "Result:", res2);
+// startTime = Date.now();
+// let res22 = memoizedExpensive(1, 2);
+// console.log("Time taken:", Date.now() - startTime, "Result:", res22);
+
+
+//polyfill for once
+
+function once(fnc,context){
+    let ran;
+return function(){
+    if(fnc){
+       ran=fnc.apply(context || this,arguments)
+       fnc=null
+    }
+    return ran
+}
+}
+
+let called=0
+function middle(){
+    console.log("called",++called)
+    return called
+}
+console.log(middle())
+console.log(middle())
+console.log(middle())
+
+let onceFunction=once(middle)
+//no matter how many times you call this,it will only gets called once
+console.log(onceFunction(1,2))
+console.log(onceFunction(1,2))
+console.log(onceFunction(1,2))
+console.log(onceFunction(1,2))
