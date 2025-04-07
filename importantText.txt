@@ -20,3 +20,73 @@ Every function is an object, but not every object is a function
 
 If an object has multiple properties with the same key, the last one defined will overwrite the previous ones and the position 
 will be the first one.
+
+
+
+In JavaScript, *binding* refers to how functions are associated with their execution context, particularly what `this` refers to. There are several types of binding in JavaScript:
+
+### 🧠 1. **Default Binding**
+- Refers to how `this` is set when a function is called *without any context*.
+- In non-strict mode, `this` defaults to the **global object** (`window` in browsers).
+- In strict mode, `this` is `undefined`.
+
+function show() {
+  console.log(this); // window (in non-strict), undefined (in strict)
+}
+show();
+
+### 🧑‍🤝‍🧑 2. **Implicit Binding**
+- Occurs when a function is called as a method of an object.
+- `this` refers to the object before the dot.
+
+const user = {
+  name: "Pranai",
+  greet() {
+    console.log(this.name); // Pranai
+  }
+};
+user.greet();
+
+### 🔗 3. **Explicit Binding**
+- Using `call()`, `apply()`, or `bind()` to explicitly set `this`.
+
+function greet() {
+  console.log(this.name);
+}
+
+const person = { name: "Pranai" };
+
+greet.call(person);   // Pranai
+greet.apply(person);  // Pranai
+const boundFn = greet.bind(person);
+boundFn();            // Pranai
+
+### 🏗️ 4. **New Binding (Constructor Binding)**
+- When a function is invoked with the `new` keyword, `this` points to the newly created object.
+
+function Person(name) {
+  this.name = name;
+}
+const p = new Person("Pranai");
+console.log(p.name); // Pranai
+
+
+### 📎 5. **Lexical Binding (Arrow Functions)**
+- Arrow functions don’t have their own `this`. They *lexically inherit* `this` from the surrounding (parent) scope.
+
+const person = {
+  name: "Pranai",
+  greet: function () {
+    const arrow = () => console.log(this.name);
+    arrow(); // Pranai
+  }
+};
+person.greet();
+
+| Binding Type      | How `this` is determined |
+|-------------------|--------------------------|
+| Default Binding   | Global object / undefined |
+| Implicit Binding  | Object before the dot     |
+| Explicit Binding  | Set using `call`, `apply`, or `bind` |
+| New Binding       | New object created with `new` |
+| Lexical Binding   | Arrow function inherits from enclosing scope |
