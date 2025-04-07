@@ -30,4 +30,3 @@ function flat(user,path,helper){
 }
 let faltObj=flat(user,"user_",{})
 console.log(faltObj)
-

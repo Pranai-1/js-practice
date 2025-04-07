@@ -1,0 +1,22 @@
+Functions are first-class objects Which means:
+**You can assign them to variables
+**Pass them as arguments to other functions
+**Return them from other functions
+**Add properties to them (just like any object)
+
+function greet() {
+  console.log("Hello!");
+}
+
+typeof greet            // "function"
+greet instanceof Object // true
+greet instanceof Function // true
+
+You can even create functions like this:
+const sum = new Function('a', 'b', 'return a + b');
+console.log(sum(2, 3)); // 5
+
+Every function is an object, but not every object is a function
+
+If an object has multiple properties with the same key, the last one defined will overwrite the previous ones and the position 
+will be the first one.

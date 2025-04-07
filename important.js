@@ -20,9 +20,18 @@ shadow()
 
 function restCheck(a,x,y,...num){ 
     console.log(arguments)//[Arguments] { '0': 1, '1': 2, '2': 3 }
-    console.log(x,y,num)//emoty array
+    console.log(x,y,num)//empty array
 }
-//we cannot access arguments inside of a arrow function
+//we cannot access arguments variable inside of a arrow function because arrow functions do not have their own arguments object.
+//  Instead, they inherit arguments from their closest non-arrow function ancestor.
 restCheck(1,2,3)
 
 
+function wrapper(...args) {
+    const arrow = () => {
+      console.log(arguments,"closest non-arrow function arguments"); // Works fine
+    };
+    arrow();
+  }
+  wrapper(1, 2, 3);
+  
