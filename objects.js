@@ -121,3 +121,22 @@ const person1={
 
 const person2=changeAndReference(person1)
 console.log(person2,person1)//{ name: 'alex', age: 50 } { name: 'john', age: 99 }
+
+//shallow and deep copy
+
+let xyz  = Object.assign({}, shape2);                         // Shallow copy
+// /- Copies only the **first level** of properties.
+//If a property is an object (like `userDetails`), it **copies the reference**, not the actual nested object.
+
+let xyz2 = Object.create(shape2);                            // Inherits from shape2 (not a copy)
+//- Doesn’t copy anything.
+//- It creates an **empty object** that uses `shape2` as its **prototype**.
+
+let xyz3 = JSON.parse(JSON.stringify(shape2));               // Deep copy cannot hold functions,undefined,symbols,bigint
+//- Converts the object to a string, then back to an object.
+// - Creates an entirely **new object structure**, recursively.
+// - Great for **simple objects**, but:
+//   - Fails on `undefined`, `functions`, `symbols`, circular refs.
+  
+let xyz4 = { ...shape2 };                                   // Shallow copy (spread)
+console.log(xyz,xyz2,xyz3,xyz4)
