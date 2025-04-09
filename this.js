@@ -105,3 +105,7 @@ let calc={
 }
 let sum=calc.add(10).substarct(5).multiply(2)
 console.log(sum.total)//10
+
+//IF we pass a function which is present inside of a object as a callback to another fuction then this now 
+//doesn't point to the object,it will point to global object.Use bind to maintain the this reference to that
+//object

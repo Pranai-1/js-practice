@@ -13,12 +13,18 @@ function helper(place,area=""){
 
 
 Function.prototype.polyfillForCall = function (context, ...args) {
+    if(typeof this!=="function")
+        throw new Error("Call will only work with functions")
+   
     // If context is null or undefined, use global object (window in browsers)
     context = context || globalThis; 
 
     // Create a unique key in context to store the function reference
     const fnKey = Symbol();
     context[fnKey] = this;
+    //context.fn=this
+    //context.fn(...args)
+    //the above two lines is also enough
 console.log(context)
     // Call the function with the provided arguments
     const result = context[fnKey](...args);
@@ -29,9 +35,13 @@ console.log(context)
     return result;
 };
 
+helper.polyfillForCall(obj,"Hyderabad")
+//[].polyfillForCall(obj,"Hyderabad")
 
-//helper.polyfillForCall(obj,"Hyderabad")
-
+//You’re adding polyfillForCall to Function.prototype, which means only functions will get access to it.
+// You're calling polyfillForCall on an array ([]), not a function. Since Array.prototype doesn’t inherit from Function.prototype,
+//  it doesn't have polyfillForCall — hence the error:
+// Uncaught TypeError: [].polyfillForCall is not a function
 
 
 Function.prototype.polyfillForApply = function (context,args) { //args is already an array for Apply no need to use rest
@@ -50,7 +60,7 @@ Function.prototype.polyfillForApply = function (context,args) { //args is alread
 
 
 let bindFnc=helper.bind(obj,"hyderabad")
-console.log(bindFnc("Moosapet"))
+//console.log(bindFnc("Moosapet"))
 
 
 Function.prototype.polyFillForBind=function(context,...args){
@@ -106,7 +116,7 @@ Array.prototype.polyFillForMap=function (cb){
 }
 
 let polyFillForMapArr=arr.polyFillForMap((ele,i)=>ele*2)
-console.log(polyFillForMapArr)
+//console.log(polyFillForMapArr)
 
 
 Array.prototype.polyFillForReduce=function (cb,intialValue){
@@ -124,7 +134,7 @@ Array.prototype.polyFillForReduce=function (cb,intialValue){
 }
 
 let polyFillForReduceArr=arr.polyFillForReduce((acc,curr,index)=>curr+acc,0)
-console.log(polyFillForReduceArr)
+//console.log(polyFillForReduceArr)
 
 
 Array.prototype.polyFillForForEach=function (cb){
@@ -136,7 +146,7 @@ Array.prototype.polyFillForForEach=function (cb){
 
 
 arr.polyFillForForEach((ele,index,array)=>array[index]=ele*3)
-console.log(arr)
+//console.log(arr)
 
 
 //polyfill for memoize
