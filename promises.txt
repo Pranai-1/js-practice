@@ -1,0 +1,50 @@
+### 🧱 Your code:
+
+const firstPromise = new Promise((res) => {
+    res("First promise resolved");
+});
+
+const secondPromise = new Promise((res) => {
+    res(firstPromise); // <- resolving with another promise
+});
+
+console.log(firstPromise, secondPromise);
+
+### 🧠 Concept:
+
+> When you resolve a promise **with another promise**, the outer promise **adopts the state** of the inner one.
+
+#### ✅ `firstPromise`:
+const firstPromise = new Promise((res) => {
+    res("First promise resolved");
+});
+
+
+- Immediately resolves with `"First promise resolved"`
+- So it's in the **fulfilled** state right away
+- `console.log(firstPromise)` logs:  
+  👉 `Promise { 'First promise resolved' }`
+
+#### ❓ `secondPromise`:
+const secondPromise = new Promise((res) => {
+    res(firstPromise); // resolving with another promise!
+});
+
+- This **doesn't resolve immediately**
+- Instead, it waits for `firstPromise` to **settle**
+- Then it adopts the result of `firstPromise`
+
+So at the time of the `console.log(...)`, it’s **still pending**, just for a microtick.
+
+That’s why you get:
+
+👉 `Promise { <pending> }` for `secondPromise`
+
+But if you log it **after a tick**, like:
+
+setTimeout(() => {
+    console.log("Later:", secondPromise);
+}, 0);
+
+You’ll see:
+👉 `Promise { 'First promise resolved' }`

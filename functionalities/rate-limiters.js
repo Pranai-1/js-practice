@@ -59,4 +59,20 @@ const throttle = (fn, limit) => {
   }
 
 
-export {debouncing,throttling,throttle}
+  const myThrottle=(callback,delay)=>{
+    let last=0;
+    let lastArgs=null
+  
+    return function(...args){
+      let now=new Date().getTime()
+      lastArgs=args
+      if(now-last<delay)
+        return
+      last=now
+     return callback.apply(this,lastArgs)
+    }
+  }
+
+export {debouncing,throttling,throttle,myThrottle}
+
+
