@@ -1,3 +1,9 @@
+
+Yes — Promises in JavaScript are designed to handle asynchronous operations. But here's the subtle detail:
+
+Even though the Promise constructor executes immediately (synchronously), any .then(), .catch(), or .finally() callbacks attached 
+to the Promise are always executed asynchronously — after the current call stack is clear, via the microtask queue.
+
 ### 🧱 Your code:
 
 const firstPromise = new Promise((res) => {

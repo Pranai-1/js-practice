@@ -109,3 +109,22 @@ console.log(sum.total)//10
 //IF we pass a function which is present inside of a object as a callback to another fuction then this now 
 //doesn't point to the object,it will point to global object.Use bind to maintain the this reference to that
 //object
+
+function getThisStrict() {
+  "use strict"; // Enter strict mode
+  return this;
+}
+
+// Only for demonstration — you should not mutate built-in prototypes
+Number.prototype.getThisStrict = getThisStrict;
+console.log(typeof (1).getThisStrict()); // "number"
+
+
+function getThis() {
+  return this;
+}
+
+// Only for demonstration — you should not mutate built-in prototypes
+Number.prototype.getThis = getThis;
+console.log(typeof (1).getThis()); // "object"
+console.log(getThis() === globalThis); // true
