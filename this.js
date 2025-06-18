@@ -117,7 +117,7 @@ function getThisStrict() {
 
 // Only for demonstration — you should not mutate built-in prototypes
 Number.prototype.getThisStrict = getThisStrict;
-console.log(typeof (1).getThisStrict()); // "number"
+console.log( (1).getThisStrict()); // 1 and type is number
 
 
 function getThis() {
@@ -126,5 +126,77 @@ function getThis() {
 
 // Only for demonstration — you should not mutate built-in prototypes
 Number.prototype.getThis = getThis;
-console.log(typeof (1).getThis()); // "object"
+console.log( (1).getThis()); // Number {1} and type is object
 console.log(getThis() === globalThis); // true
+
+//In non-strict mode it points to object but in strict mode it points to number
+
+
+function logThis() {
+  "use strict";
+  console.log(this);
+}
+
+[1, 2, 3].forEach(logThis); // undefined, undefined, undefined
+
+
+[1, 2, 3].forEach(logThis, { name: "obj" });
+// { name: 'obj' }, { name: 'obj' }, { name: 'obj' }
+
+
+//when invoking arrow functions using call(), bind(), or apply(), the thisArg parameter is ignored.
+//  You can still pass other arguments using these methods, though.
+
+
+const globalObject = this;
+const foo = () => this;
+console.log(foo() === globalObject); // true
+
+
+const obj = { name: "obj" };
+
+// Attempt to set this using call
+console.log(foo.call(obj) === globalObject); // true
+
+// Attempt to set this using bind
+const boundFoo = foo.bind(obj);
+console.log(boundFoo() === globalObject); // true
+
+
+function f() {
+  return this.a;
+}
+
+const g = f.bind({ a: "azerty" });
+console.log(g()); // azerty
+
+const h = g.bind({ a: "yoo" }); // bind only works once!
+console.log(h()); // azerty
+
+const o = { a: 37, f, g, h };
+console.log(o.a, o.f(), o.g(), o.h()); // 37 37 azerty azerty
+
+
+
+
+const objx = {
+  getThisGetter() {
+    const getter = () => this;
+    return getter;
+  },
+};
+
+// We can call getThisGetter as a method of obj, which binds this to obj inside its body.
+//  The returned function is assigned to a variable fn. Now, when calling fn, the value of this returned is 
+//  still the one set by the call to getThisGetter, which is obj. If the returned function was not an arrow function, 
+// such calls would cause the this value to be globalThis, because getThisGetter is non-strict.
+
+const fn = objx.getThisGetter();
+console.log(fn() === objx); // true
+
+// But be careful if you unbind the method of obj without calling it, because getThisGetter is still a method
+// that has a varying this value. Calling fn2()() in the following example returns globalThis, because it follows the this from fn2() 
+// which is globalThis since it's called without being attached to any object.
+
+const fn2 = obj.getThisGetter;
+console.log(fn2()() === globalThis); // true in non-strict mode

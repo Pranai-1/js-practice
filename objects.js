@@ -8,10 +8,27 @@ obj.name="reddy"
 console.log(obj2.name)//reddy because value changes
 //obj is the prototype of obj2
 
-obj2.name="xyz"//here we are adding a new field for the empty obj2 object,so this will not make anyn change in obj
+obj2.name="xyz"//here we are adding a new field for the empty obj2 object,so this will not make any change in obj
 //it will not check for the name field its prototype now because obj2 itself have a name property.So,this will take 
 //the precedence now
 
+let strObj={
+    "hello":"hi"
+}
+console.log(strObj)//{hello: 'hi'}
+
+let firstProperty="firstname"
+
+let dynamicObj={
+    [firstProperty]:"Reddy"
+}
+console.log(dynamicObj)//{firstname: 'Reddy'}
+
+//use for in loops to iterate the object directly
+
+for(key in strObj){
+    console.log(key,strObj[key])
+}
 
 let a={}
 let b={name:"pranai"}
@@ -21,8 +38,13 @@ a[c]=456//this will replace 123 with 456
 console.log(a) //{ '[object Object]': 456 }
 console.log(a[b],a[c])//456 456
 
-a[JSON.stringify(b)]="json string" //object to string
-//JSON.parse(str)  //string to object
+a[JSON.stringify(b)]="json string" //object to string  //{{"name":"pranai"}: 'json string'}
+//JSON.parse(str)  //string to object  
+JSON.parse(`{"hello":"hi"}`)
+
+let spreadArr=[..."Hello"]  //['H', 'e', 'l', 'l', 'o']
+//Use of JSON.stringify and JSON.parse is that if we want to store objects in local storage,they will automatically gets converted
+//into string like [object object] .Toavoid this we use JSON.stringify and then store it local storage.After retrieving we parse the values
 console.log(a)
 
 const settings={
@@ -65,7 +87,7 @@ console.log(shape2.diameter(),shape2.helper())//314.1592653589793 62.83185307179
 
 //Destructuring
 const radius=100
-const{radius:myRadius}=shape2 //extracting radius from shape2 and assigning it to myRadius
+const{radius:myRadius}=shape2 //extracting radius from shape2 and assigning it to myRadius,we cannot access radius now
 const{userDetails:{name},}=shape2//accessing name field from userDetails object which is in shape2 object
 console.log(name,radius,myRadius)
 
@@ -100,7 +122,7 @@ const helperArr=[1,2,3,4,5,shape2,randomFunc,arrow]
 console.log(helperArr)
 randomFunc=23
 arrow=12
-console.log(helperArr)
+console.log(helperArr) //no chnage in oputput
 
 
 //references of objects
@@ -124,11 +146,19 @@ console.log(person2,person1)//{ name: 'alex', age: 50 } { name: 'john', age: 99 
 
 //shallow and deep copy
 
-let xyz  = Object.assign({}, shape2);                         // Shallow copy
+let xyz  = Object.assign({}, shape2);                         // Shallow copy  //Copies properties from source(s)
+
 // /- Copies only the **first level** of properties.
 //If a property is an object (like `userDetails`), it **copies the reference**, not the actual nested object.
 
+const target = { a: 1 };
+const source = { b: 2 };
+const result = Object.assign(target, source);
+
+console.log(result); // { a: 1, b: 2 }
+
 let xyz2 = Object.create(shape2);                            // Inherits from shape2 (not a copy)
+// /Creates a new object with a given prototype
 //- Doesn’t copy anything.
 //- It creates an **empty object** that uses `shape2` as its **prototype**.
 

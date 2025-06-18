@@ -5,7 +5,8 @@ function f(){
 let fUser={
     g:f.bind(null)
 }
-fUser.g() //we get null in node environment and window in browser environment
+fUser.g() //we get null in node environment and window in browser environment .In case of strict mode browser will give null as well
+//In non-strict mode, when this is null or undefined, JavaScript automatically replaces it with the global object, which is window.
 
 let bindChainObj={
     name:"reddy"

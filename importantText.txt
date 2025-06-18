@@ -90,3 +90,8 @@ person.greet();
 | Explicit Binding  | Set using `call`, `apply`, or `bind` |
 | New Binding       | New object created with `new` |
 | Lexical Binding   | Arrow function inherits from enclosing scope |
+
+
+let _counter:-
+The underscore at the start is just a naming convention. It doesn’t change the behavior, but
+It suggests that the variable is intended to be "private" or internal-use-only
