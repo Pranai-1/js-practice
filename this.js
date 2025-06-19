@@ -5,11 +5,18 @@ let user={
         location:"hyderabad",
         name:"moosapet",
         getDetails(){
+            function xyz(){
+                 console.log(this.name,this.location)//this will be global object here in non-strict mode but undefined in strict mode
+            }
+            xyz()
             console.log(this.name,this.age)//moosapet undefined
             //here this points to address object so age is undefined
         }
     }
 }
+
+// In JavaScript, how a function is called determines the value of this, not where the function was defined or created.
+
 
 user.address.getDetails()
 
@@ -117,7 +124,7 @@ function getThisStrict() {
 
 // Only for demonstration — you should not mutate built-in prototypes
 Number.prototype.getThisStrict = getThisStrict;
-console.log( (1).getThisStrict()); // 1 and type is number
+console.log((1).getThisStrict()); // 1 and type is number
 
 
 function getThis() {
@@ -126,7 +133,7 @@ function getThis() {
 
 // Only for demonstration — you should not mutate built-in prototypes
 Number.prototype.getThis = getThis;
-console.log( (1).getThis()); // Number {1} and type is object
+console.log((1).getThis()); // Number {1} and type is object
 console.log(getThis() === globalThis); // true
 
 //In non-strict mode it points to object but in strict mode it points to number
@@ -200,3 +207,53 @@ console.log(fn() === objx); // true
 
 const fn2 = obj.getThisGetter;
 console.log(fn2()() === globalThis); // true in non-strict mode
+
+//guess the output of these two objects
+
+let userx={
+    name:"pranai",
+    age:24,
+    address:{
+        location:"hyderabad",
+        name:"moosapet",
+        getDetails:()=>{
+            console.log(this)
+            let xyz=()=>{
+                console.log(this)
+                 console.log(this.name,this.location)
+            }
+            xyz()
+            console.log(this.name,this.age)//moosapet undefined
+            //here this points to address object so age is undefined
+        }
+    }
+}
+
+user.address.getDetails()
+
+
+let usery={
+    name:"pranai",
+    age:24,
+    address:{
+        location:"hyderabad",
+        name:"moosapet",
+        getDetails:function (){
+             console.log(this)
+          let arrow1=()=>{
+            console.log(this)
+            let arrow2=()=>{
+                console.log(this)
+                 console.log(this.name,this.location)
+            }
+            arrow2()
+            console.log(this.name,this.age)//moosapet undefined
+            //here this points to address object so age is undefined
+        }
+            arrow1()
+        }
+            
+    }
+}
+
+user.address.getDetails()

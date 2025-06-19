@@ -95,3 +95,13 @@ person.greet();
 let _counter:-
 The underscore at the start is just a naming convention. It doesn’t change the behavior, but
 It suggests that the variable is intended to be "private" or internal-use-only
+
+Use of apply:-
+| Use Case                                | Example                                  |
+| --------------------------------------- | ---------------------------------------- |
+| Spread arrays into function calls       | `Math.max.apply(null, arr)`              |
+| Append arrays                           | `arr1.push.apply(arr1, arr2)`            |
+| Use array methods on array-like objects | `Array.prototype.slice.apply(arguments)` |
+| Invoke functions with dynamic `this`    | `func.apply(context, argsArray)`         |
+| Variadic function forwarding            | `someFunc.apply(null, generatedArgs)`    |
+| Duplicate array elements                | `arr.push.apply(arr, arr)`               |
