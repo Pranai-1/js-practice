@@ -193,7 +193,7 @@ let objPolyfill={
   age:24
 }
 
-// polyfillHelper.call(objPolyfill,"Reddy",25,"hyderabad")//All of these three gives the same output
+polyfillHelper.call(objPolyfill,"Reddy",25,"hyderabad")//All of these three gives the same output
 // polyfillHelper.apply(objPolyfill,["Reddy",25,"hyderabad"])
 // polyfillHelper.bind(objPolyfill,"Reddy",25,"hyderabad")()//{ name: 'Pranai', age: 24 } Pranai Reddy 25 [ 'hyderabad' ]
 
@@ -204,7 +204,7 @@ Function.prototype.callPolyfill=function(...args){
   context.fnc=fnc
   return context.fnc(...args.slice(1))
 }
-polyfillHelper.callPolyfill(objPolyfill,"Reddy",25,"hyderabad")//{ name: 'Pranai', age: 24, fnc: [Function: polyfillHelper] } Pranai Reddy 25 [ 'hyderabad' ]
+//polyfillHelper.callPolyfill(objPolyfill,"Reddy",25,"hyderabad")//{ name: 'Pranai', age: 24, fnc: [Function: polyfillHelper] } Pranai Reddy 25 [ 'hyderabad' ]
 
 Function.prototype.applyPolyfill=function(...args){
   const context=args[0]
@@ -212,7 +212,7 @@ Function.prototype.applyPolyfill=function(...args){
   context.fnc=fnc
   return context.fnc(...args[1])
 }
-polyfillHelper.applyPolyfill(objPolyfill,["Reddy",25,"hyderabad"])
+//polyfillHelper.applyPolyfill(objPolyfill,["Reddy",25,"hyderabad"])
 
 Function.prototype.bindPolyfill=function(...args){
   const context=args[0]
@@ -225,6 +225,58 @@ Function.prototype.bindPolyfill=function(...args){
   
 }
 let returnedBind=polyfillHelper.bindPolyfill(objPolyfill,"Reddy",25,"hyderabad")
-returnedBind()
+//returnedBind()
 
 //successfully written call,apply,bind polyfills without any revision,bind took some time to understand but not much
+
+
+function heavy(num){
+  console.log(num)
+  console.log(Date.now(),new Date(),new Date().getTime())
+  // /1750413771670 Fri Jun 20 2025 15:32:51 GMT+0530 (India Standard Time) 1750413771670
+//  Date.now()==new Date().getTime()  //true
+  let start=Date.now()
+while(Date.now()-start<2000){}
+return num*num
+}
+
+function memoize(fnc){
+  let cache={}
+  return function(...args){
+    let key=JSON.stringify(args)
+    if(key in cache) //cache[key]!==undefined
+      return cache[key]
+    else
+    cache[key]=fnc.apply(this,args)
+  return cache[key]
+  }
+}
+// console.log(heavy(2))
+// console.log(heavy(2))
+// let memoizeFnc=memoize(heavy)
+// console.log(memoizeFnc(3))
+// console.log(memoizeFnc(3))
+
+let called=0
+function checkOnce(){
+ console.log("called",++called)
+ return called
+}
+
+function once(fnc){
+  let ran
+  return function(...args){
+    if(ran)
+    return ran
+    ran=fnc.apply(this,args)
+    fnc=null
+    return ran
+  }
+}
+console.log(checkOnce())
+console.log(checkOnce())
+console.log(checkOnce())
+let onceFunction=once(checkOnce)
+console.log(onceFunction())
+console.log(onceFunction())
+console.log(onceFunction())
